@@ -1,0 +1,23 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "outputCapture": "std",
+            "skipFiles": [
+                "<node_internals>/**/*.js",
+                "${workspaceFolder}/node_modules/**/*.js",
+              ],
+            "program": "${file}",
+            "env": {
+                "LOG_FILE_LOCATION":"c:\\temp\\zeuis-dash-log",
+                "DATABASE_PATH":"mssql://zeusapi:zeusapi1234$@ec2-35-172-227-240.compute-1.amazonaws.com/ZeusIntel?requestTimeout=30000",
+            }
+        }
+    ]
+}

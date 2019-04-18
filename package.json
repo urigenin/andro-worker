@@ -1,0 +1,37 @@
+{
+  "name": "andro-worker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://urigenin:urigzeus123@github.com/urigenin/andro-worker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/urigenin/andro-worker/issues"
+  },
+  "dependencies": {
+    "async": "^2.6.0",
+    "dotenv": "^4.0.0",
+    "good": "^7.3.0",
+    "good-winston": "^4.0.0",
+    "good-winston-reporter": "^1.0.0",
+    "moment": "^2.20.1",
+    "mssql": "^4.1.0",
+    "fs": "0.0.1-security",
+    "node-geocoder": "^3.21.1",
+    "path": "^0.12.7",
+    "process-nextick-args": "^2.0.0",
+    "protobufjs": "^6.8.8",
+    "vision": "^5.4.4",
+    "winston": "^2.4.0",
+    "winston-daily-rotate-file": "^1.7.2"
+  },
+  "homepage": "https://github.com/urigenin/andro-worker#readme"
+}
