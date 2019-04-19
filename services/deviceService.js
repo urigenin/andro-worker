@@ -5,10 +5,15 @@ class DeviceService{
     }
 
     async getDeviceConsumer(deviceUID){
-        let sql  =`SELECT * from Device WHERE deviceUID=@deviceUID`
+        let sql  =`SELECT TOP 1 * from Device WHERE deviceUID=@deviceUID`
         let request = this.sqlDal.getDbRequest();
         request.input('deviceUID',deviceUID)
-        return await this.sqlDal.getDataAsync(request,sql);
+        let result =  await this.sqlDal.getDataAsync(request,sql);
+        if (result.length==0)
+            return null;
+        
+        return result[0];
+
     }
 }
 module.exports = DeviceReader;

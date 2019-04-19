@@ -1,13 +1,17 @@
 const sqlDALFactory  = require('./../utils/sqlDALFactory');
 const configManager = require('./../utils/configManager');
 const DeviceService = require('./../services/deviceService')
+const IncomingMessageService = require('./../services/incomingMessageService') ;
 const path = require('path');
+const DataProcessorBase = require('./dataProcessorBase')
+const {MessageTypes}  = require('./../consts');
 const DataPacketPayloadReader = require('./../messageConverters/dataPacketPayloadReader')
 let filePath = path.join(__dirname,'/protos/ProtoData.proto');
 
-class DataPacketProcessor{
+
+class DataPacketProcessor extends DataProcessorBase{
     constructor(logger){
-        this.logger = logger;
+        super( logger);
     }
     process(rowMessage){
         let dal = null;
@@ -20,7 +24,15 @@ class DataPacketProcessor{
             let deviceService = new DeviceService(dal,this.logger);
             let consumerData = deviceService.getDeviceConsumer(msgProcessed.devUid);
             if(consumerData!=null){
-
+                let messageForStore = {
+                    deviceUID:consumerData.deviceUID,
+                    dataConsumerId:consumerData.dataConsumerId,
+                    messageTypeId:MessageTypes.MESSAGE_DATA_PACKET,
+                    payload:msgProcessed,
+                    recieveDate: new Date()
+                };
+                let incomingMessageService = new IncomingMessageService(dal,this.logger);
+                await incomingMessageService.addMessage(messageForStore)
             }
             else{
                 this.logger.warn('No consumer found for message for device ' +msgProcessed.devUid);
