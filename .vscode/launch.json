@@ -13,9 +13,14 @@
                 "<node_internals>/**/*.js",
                 "${workspaceFolder}/node_modules/**/*.js",
               ],
-            "program": "${file}",
+            "program": "${workspaceFolder}/server.js",
             "env": {
-                "LOG_FILE_LOCATION":"c:\\temp\\zeuis-dash-log",
+                "INCOMING_DATA_PACKET_TOPIC":"IncomingDataPacket",
+                "MQTT_BROKER_USER_NAME":"andro-worker",
+                "MQTT_BROKER_PASSWORD":"andr0w2019XAA",
+                "MQTT_CLIENT_ID":"worker-iot",
+                "LOG_FILE_LOCATION":"c:\\temp\\andro-worker-log",
+                "MQTT_BROKER_ADDRESS":"mqtts://b-3f4b6a80-e5eb-4794-93de-6a211d3954a9-1.mq.us-east-1.amazonaws.com:8883",
                 "DATABASE_PATH":"mssql://zeusapi:zeusapi1234$@ec2-35-172-227-240.compute-1.amazonaws.com/ZeusIntel?requestTimeout=30000",
             }
         }
