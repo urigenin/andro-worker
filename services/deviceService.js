@@ -16,4 +16,4 @@ class DeviceService{
 
     }
 }
-module.exports = DeviceReader;
+module.exports = DeviceService;

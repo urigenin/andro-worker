@@ -13,14 +13,15 @@ class DataPacketProcessor extends DataProcessorBase{
     constructor(logger){
         super( logger);
     }
-    process(rowMessage){
+    async process(rowMessage){
         let dal = null;
         try{
             let dataPacketPayloadReader = new DataPacketPayloadReader()
 
             let msgProcessed  = await dataPacketPayloadReader.readMessage(filePath,rowMessage)
 
-            dal = await this.sqlDAL.initDAL(configManager.getSQLConfig())
+            dal = await this.sqlDAL.initDAL(configManager.getSQLConfig());
+            
             let deviceService = new DeviceService(dal,this.logger);
             let consumerData = deviceService.getDeviceConsumer(msgProcessed.devUid);
             if(consumerData!=null){

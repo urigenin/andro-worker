@@ -1,7 +1,7 @@
 var protobuf = require("protobufjs");
-var fs = require('fs')
 
-class TechDataPayloadReader{
+
+class DataPacketPayloadReader{
 
     readMessage(protoFilePath,messageBuffer){
        
@@ -41,4 +41,4 @@ class TechDataPayloadReader{
 
 
 }
-module.exports = TechDataPayloadReader;
+module.exports = DataPacketPayloadReader;

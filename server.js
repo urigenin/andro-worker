@@ -20,7 +20,7 @@ const start = async function () {
     },(topic,newMessage)=>{
         logger.debug('New message for topic ' +topic +'  message ' +newMessage.toString());
        
-        await dtp.process(newMessage);
+       // await dtp.process(newMessage);
 
         logger.debug('Message processed for topic ' +topic +'  message ' +newMessage.toString());
     });
@@ -39,6 +39,8 @@ const start = async function () {
     //     console.log('New message for topic ' +topic +'  message ' +newMessage.toString())
     // });
     // await mqttConsumer2.publish(getIncomingDataPacketTopic(),"BBBB " + new Date().getTime());
+    // await mqttConsumer2.publish(getIncomingDataPacketTopic(),"ZZZZZ " + new Date().getTime());
+    
 }
 
 try{
