@@ -5,6 +5,7 @@ const IncomingMessageService = require('./../services/incomingMessageService') ;
 const path = require('path');
 const DataProcessorBase = require('./dataProcessorBase')
 const {MessageTypes}  = require('./../consts');
+const sqlDAL  = require('./../utils/sqlDALFactory')
 const DataPacketPayloadReader = require('./../messageConverters/dataPacketPayloadReader')
 let filePath = path.join(__dirname,'./../protos/ProtoData.proto');
 
@@ -20,7 +21,7 @@ class DataPacketProcessor extends DataProcessorBase{
 
             let msgProcessed  = await dataPacketPayloadReader.readMessage(filePath,rowMessage)
 
-            dal = await this.sqlDAL.initDAL(configManager.getSQLConfig());
+            dal = await sqlDAL.initDAL(configManager.getSQLConfig());
             
             let deviceService = new DeviceService(dal,this.logger);
             let consumerData = deviceService.getDeviceConsumer(msgProcessed.devUid);
