@@ -6,7 +6,7 @@ const path = require('path');
 const DataProcessorBase = require('./dataProcessorBase')
 const {MessageTypes}  = require('./../consts');
 const DataPacketPayloadReader = require('./../messageConverters/dataPacketPayloadReader')
-let filePath = path.join(__dirname,'/protos/ProtoData.proto');
+let filePath = path.join(__dirname,'./../protos/ProtoData.proto');
 
 
 class DataPacketProcessor extends DataProcessorBase{

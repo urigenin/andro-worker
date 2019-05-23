@@ -17,10 +17,12 @@ const start = async function () {
         logger.error('Connection to MQTT, error')
     },()=>{
         logger.error('Connection to MQTT disconnected')
-    },(topic,newMessage)=>{
+    },(topic,newMessage)=> {
         logger.debug('New message for topic ' +topic +'  message ' +newMessage.toString());
        
-       // await dtp.process(newMessage);
+        dtp.process(newMessage).then((d)=>{
+            console.log('Packet processed')
+        })
 
         logger.debug('Message processed for topic ' +topic +'  message ' +newMessage.toString());
     });
