@@ -4,8 +4,9 @@ class MqttConsumer{
         this.client = null;
         this.logger  =logger;
         this.isConnected = false;
+        this.topic = '';
     }
-    connect(connectionData,clientId,onError,onDisconnect,onNewMessage){
+    connect(connectionData,clientId,onError,onDisconnect){
         let me = this;
         return new Promise((resolve,reject)=>{
             try{
@@ -32,10 +33,7 @@ class MqttConsumer{
                     me.isConnected = true;
                     return resolve();
                 });
-                me.client.on('message', function (topic, message) {
-                    me.logger.debug('MqttConsumer - new message arrived on topic ' +topic)
-                    onNewMessage(topic, message);
-                });
+                
             }
             catch(ex){
                 me.logger.error(ex);
@@ -61,14 +59,20 @@ class MqttConsumer{
             });
         });
     }
-     subscribe(topicName){
+     subscribe(topicName,onNewMessage){
          let me = this;
          return new Promise((resolve,reject)=>{
             this.client.subscribe(topicName, {qos:1},function (err,granted) {
                 if (err!=null) {
                     return reject(err);
                 }
-
+                me.client.handleMessage = function(message,callback){
+                ///    me.client.on('message', function (topic, message) { 
+                        me.logger.debug('MqttConsumer - new message arrived on topic ' +topic)
+                        onNewMessage(topic, message).then(()=>{
+                            callback();
+                        })
+                };
                 me.logger.info('Mqtt subscribe ',granted)
                 return resolve();
              })

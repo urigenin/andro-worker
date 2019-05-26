@@ -17,17 +17,17 @@ const start = async function () {
         logger.error('Connection to MQTT, error')
     },()=>{
         logger.error('Connection to MQTT disconnected')
-    },(topic,newMessage)=> {
+    });
+    
+    await mqttConsumer.subscribe(getIncomingDataPacketTopic(),(topic,newMessage)=> {
         logger.debug('New message for topic ' +topic +'  message ' +newMessage.toString());
        
-        dtp.process(newMessage).then((d)=>{
+        return dtp.process(newMessage).then((d)=>{
             console.log('Packet processed')
         })
 
-        logger.debug('Message processed for topic ' +topic +'  message ' +newMessage.toString());
-    });
     
-    await mqttConsumer.subscribe(getIncomingDataPacketTopic())
+    });
 
 
 
