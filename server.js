@@ -23,7 +23,7 @@ const start = async function () {
 
     mqttConsumer.handleMessages(
         (topic,newMessage)=> {
-            logger.info('New message for topic ' +topic +'  message ' +newMessage.length);
+            logger.info('New message for topic ' +topic +',  message length ' +newMessage.length);
         
             return dtp.process(newMessage).then((d)=>{
                 console.log('Packet processed')

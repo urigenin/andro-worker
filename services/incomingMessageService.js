@@ -9,7 +9,7 @@ class IncomingMessageService{
             ([deviceUID]
             ,dataConsumerId
             ,[recieveDate],messageTypeId,[payload])
-        VALUES (@deviceUID,@dataConsumerId,@recieveDate,@messageTypeId,@payload)`
+        VALUES (@deviceUID,@dataConsumerId,@recieveDate,@messageTypeId,@payload);SELECT SCOPE_IDENTITY() as newId`
         let request = this.sqlDal.getDbRequest();
         request.input('deviceUID',messageData.deviceUID)
         request.input('dataConsumerId',messageData.dataConsumerId)
@@ -18,7 +18,9 @@ class IncomingMessageService{
 
         let payloadJson = JSON.stringify( messageData.payload);
         request.input('payload',payloadJson);
-        return await this.sqlDal.performUpdate(request,sql);
+        let newInfo=  await this.sqlDal.getDataAsync(request,sql);
+        let newId = newInfo[0]['newId'];
+        return newId;
     }
 }
 module.exports = IncomingMessageService;

@@ -55,7 +55,8 @@ class DataPacketProcessor extends DataProcessorBase{
                 dataForStore.payload= mpayloadToBeSaved;
                 
                 let incomingMessageService = new IncomingMessageService(dal,this.logger);
-                await incomingMessageService.addMessage(dataForStore)
+                let newId = await incomingMessageService.addMessage(dataForStore)
+                this.logger.info('DataPacketProcessor- saved new incomming message from ' + consumerData.deviceUID + ' with id ' +newId )
             }
             else{
                 this.logger.warn('No consumer found for message for device ' +msgProcessed.devUid);
