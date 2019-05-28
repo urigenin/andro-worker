@@ -16,6 +16,7 @@ class DataPacketProcessor extends DataProcessorBase{
     }
     async process(rowMessage){
         let dal = null;
+        let me = this;
         try{
             let dataPacketPayloadReader = new DataPacketPayloadReader()
 
