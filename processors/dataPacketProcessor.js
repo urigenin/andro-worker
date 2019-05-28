@@ -17,6 +17,7 @@ class DataPacketProcessor extends DataProcessorBase{
     async process(rowMessage){
         let dal = null;
         let me = this;
+        let progresslog="0";
         try{
             let dataPacketPayloadReader = new DataPacketPayloadReader()
 
@@ -45,6 +46,7 @@ class DataPacketProcessor extends DataProcessorBase{
                     let val =Number( msgProcessed.weightData[i]);
                     newWeightDataArray.push(val);
                 }
+                progresslog="1";
                 mpayloadToBeSaved.sensorData=newSensorDataArray;
                 mpayloadToBeSaved.weightData=newWeightDataArray;
                 mpayloadToBeSaved.firmwareVersion = msgProcessed.firmwareVersion;
@@ -52,11 +54,13 @@ class DataPacketProcessor extends DataProcessorBase{
                 mpayloadToBeSaved.timeStamp = msgProcessed.timeStamp;
                 mpayloadToBeSaved.rssi = msgProcessed.rssi;
                 mpayloadToBeSaved.battState = msgProcessed.battState;
-
+                progresslog="2";
                 dataForStore.payload= mpayloadToBeSaved;
                 
                 let incomingMessageService = new IncomingMessageService(dal,this.logger);
+                progresslog="3"
                 let newId = await incomingMessageService.addMessage(dataForStore)
+                progresslog="4"
                 this.logger.info('DataPacketProcessor- saved new incomming message from ' + consumerData.deviceUID + ' with id ' +newId )
             }
             else{
@@ -66,8 +70,8 @@ class DataPacketProcessor extends DataProcessorBase{
             
         }
         catch(ex){
-            me.logger.error('handleGetDataModelTypes failed' ,ex);
-            return (Boom.badImplementation("unable to process request - Server Error"));
+            me.logger.error('handleGetDataModelTypes failed ' +progresslog,ex);
+           throw ex;
         }
         finally{
             dal.closeConnection()
