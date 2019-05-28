@@ -17,6 +17,7 @@ class MqttConsumer{
                      protocolVersion: 4,
                     clean:false,
                     keepalive:60,
+
                     clientId:clientId
                 })
                 this.client.on('error',function(err){
@@ -29,11 +30,17 @@ class MqttConsumer{
                 });
                 this.client.on('connect', function (connInfo) {
 
-                    me.logger.info('MqttConsumer successfully connected')
+                    me.logger.info('MqttConsumer successfully connected',connInfo)
                     me.isConnected = true;
                     return resolve();
                 });
-                
+            //      me.client.handleMessage = function(message,callback){
+            //    // me.client.on('message', function (topic, message) { 
+            //             me.logger.debug('MqttConsumer - new message arrived on topic ' +message.topic)
+            //             // onNewMessage(message.topic, message).then(()=>{
+            //             //     callback();
+            //             // })
+            //     };
             }
             catch(ex){
                 me.logger.error(ex);
@@ -59,20 +66,35 @@ class MqttConsumer{
             });
         });
     }
-     subscribe(topicName,onNewMessage){
+    handleMessages(onNewMessage){
+        let me = this;
+     
+        this.client.handleMessage = function(message,callback){
+            me.messageRecieved = true;
+        //me.client.on('message', function (topic, message) { 
+            me.logger.debug('MqttConsumer - new message arrived on topic ' +message.topic)
+            onNewMessage(message.topic, message.payload).then(()=>{
+                callback();
+            })
+        };
+    }
+    subscribeDelayed(topicName){
+        let me = this;
+        setTimeout(()=>{
+            if(me.messageRecieved==null ){
+                me.subscribe(topicName);
+            }
+        },1000);
+    }
+     subscribe(topicName){
          let me = this;
+        
          return new Promise((resolve,reject)=>{
-            this.client.subscribe(topicName, {qos:1},function (err,granted) {
+            this.client.subscribe(topicName,{qos:1},function (err,granted) {
                 if (err!=null) {
                     return reject(err);
                 }
-                me.client.handleMessage = function(message,callback){
-                ///    me.client.on('message', function (topic, message) { 
-                        me.logger.debug('MqttConsumer - new message arrived on topic ' +topic)
-                        onNewMessage(topic, message).then(()=>{
-                            callback();
-                        })
-                };
+                
                 me.logger.info('Mqtt subscribe ',granted)
                 return resolve();
              })

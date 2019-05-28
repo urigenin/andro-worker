@@ -24,17 +24,38 @@ class DataPacketProcessor extends DataProcessorBase{
             dal = await sqlDAL.initDAL(configManager.getSQLConfig());
             
             let deviceService = new DeviceService(dal,this.logger);
-            let consumerData = deviceService.getDeviceConsumer(msgProcessed.devUid);
+            let consumerData = await deviceService.getDeviceConsumer(msgProcessed.devUid);
             if(consumerData!=null){
-                let messageForStore = {
+                let dataForStore = {
                     deviceUID:consumerData.deviceUID,
                     dataConsumerId:consumerData.dataConsumerId,
                     messageTypeId:MessageTypes.MESSAGE_DATA_PACKET,
-                    payload:msgProcessed,
+                  
                     recieveDate: new Date()
                 };
+                let newSensorDataArray = [];
+                let mpayloadToBeSaved = {};
+                for(let i = 0 ;i< msgProcessed.sensorData.length;i++){
+                    let val =Number( msgProcessed.sensorData[i]);
+                    newSensorDataArray.push(val);
+                }
+                let newWeightDataArray = [];
+                for(let i = 0 ;i< msgProcessed.weightData.length;i++){
+                    let val =Number( msgProcessed.weightData[i]);
+                    newWeightDataArray.push(val);
+                }
+                mpayloadToBeSaved.sensorData=newSensorDataArray;
+                mpayloadToBeSaved.weightData=newWeightDataArray;
+                mpayloadToBeSaved.firmwareVersion = msgProcessed.firmwareVersion;
+                mpayloadToBeSaved.hardwareVersion = msgProcessed.hardwareVersion;
+                mpayloadToBeSaved.timeStamp = msgProcessed.timeStamp;
+                mpayloadToBeSaved.rssi = msgProcessed.rssi;
+                mpayloadToBeSaved.battState = msgProcessed.battState;
+
+                dataForStore.payload= mpayloadToBeSaved;
+                
                 let incomingMessageService = new IncomingMessageService(dal,this.logger);
-                await incomingMessageService.addMessage(messageForStore)
+                await incomingMessageService.addMessage(dataForStore)
             }
             else{
                 this.logger.warn('No consumer found for message for device ' +msgProcessed.devUid);

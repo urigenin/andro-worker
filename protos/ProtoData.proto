@@ -1,25 +1,27 @@
 syntax = "proto3";
 
 package ProtoData;
-  
+
 message DataPacket
 {
-  bytes weightData = 1; // Up to 1200 bytes - 600 uint16 in little endian
-  bytes sensorData = 2; // Up to 16 bytes - 8 uint16 in little endian
-  uint32 rssi =      3;
-  uint32 battState = 4; 
-  string timeStamp = 5; // Format: dd/mm/yyyy hh:mm:ss - 19 chars (without null terminator)
-  string version =   6; // Format: XX.XX - 5 chars (without null terminator)
-  uint32 devUid =    7; // Device UID
+  bytes  weightData      = 1; // Up to 1200 bytes - 600 uint16 in little endian
+  bytes  sensorData      = 2; // Up to 16 bytes - 8 uint16 in little endian
+  uint32 rssi            = 3;
+  uint32 battState       = 4; 
+  string timeStamp       = 5; // Format: dd/mm/yyyy hh:mm:ss - 19 chars (without null terminator)
+  string hardwareVersion = 6; // Format: XX.XX - 5 chars (without null terminator)
+  string firmwareVersion = 7; // Format: XX.XX.XXXXX - 11 chars (without null terminator)
+  uint32 devUid          = 8; // Device UID
 }
 
-message ThecData
+message TechData
 {
-  uint32 weightData = 1;
-  bytes sensorData =  2; // Up to 16 bytes - 8 uint16 in little endian
-  uint32 rssi =       3;
-  uint32 battState =  4;
-  string timeStamp =  5; // Format: dd/mm/yyyy hh:mm:ss - 19 chars (without null terminator)
-  string version =    6; // Format: XX.XX - 5 chars (without null terminator)
-  uint32 devUid =     7; // Device UID
+  uint32 weightData      = 1;
+  bytes  sensorData      = 2; // Up to 16 bytes - 8 uint16 in little endian
+  uint32 rssi            = 3;
+  uint32 battState       = 4;
+  string timeStamp       = 5; // Format: dd/mm/yyyy hh:mm:ss - 19 chars (without null terminator)
+  string hardwareVersion = 6; // Format: XX.XX - 5 chars (without null terminator)
+  string firmwareVersion = 7; // Format: XX.XX - 5 chars (without null terminator)
+  uint32 devUid          = 8; // Device UID
 }

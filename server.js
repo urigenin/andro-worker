@@ -1,7 +1,7 @@
 
 const winston = require('winston');
 const MqttConsumer = require('./comm/mqttConsumer')
-const {getMqttBrokerDetails,getIncomingDataPacketTopic} = require('./utils/configManager')
+const {getMqttBrokerDetails,getIncomingDataPacketTopic,getIncomingTopicPattern} = require('./utils/configManager')
 const loggerLib = require('./utils/logger');
 const DataPacketProcessor = require('./processors/dataPacketProcessor')
 const logger= loggerLib.initialize(winston);
@@ -19,15 +19,19 @@ const start = async function () {
         logger.error('Connection to MQTT disconnected')
     });
     
-    await mqttConsumer.subscribe(getIncomingDataPacketTopic(),(topic,newMessage)=> {
-        logger.debug('New message for topic ' +topic +'  message ' +newMessage.toString());
-       
-        return dtp.process(newMessage).then((d)=>{
-            console.log('Packet processed')
-        })
+    mqttConsumer.subscribeDelayed(getIncomingTopicPattern());
 
-    
+    mqttConsumer.handleMessages(
+        (topic,newMessage)=> {
+            logger.info('New message for topic ' +topic +'  message ' +newMessage.length);
+        
+            return dtp.process(newMessage).then((d)=>{
+                console.log('Packet processed')
+            })
+
+        
     });
+
 
 
 
@@ -41,7 +45,7 @@ const start = async function () {
     //     console.log('New message for topic ' +topic +'  message ' +newMessage.toString())
     // });
     // await mqttConsumer2.publish(getIncomingDataPacketTopic(),"BBBB " + new Date().getTime());
-    // await mqttConsumer2.publish(getIncomingDataPacketTopic(),"ZZZZZ " + new Date().getTime());
+ 
     
 }
 

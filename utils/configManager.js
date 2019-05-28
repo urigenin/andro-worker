@@ -13,6 +13,8 @@ module.exports = {
     },
     getIncomingDataPacketTopic:function(){
         return process.env.INCOMING_DATA_PACKET_TOPIC
-    }
-    
+    },
+    getIncomingTopicPattern:function(){
+        return process.env.INCOMING_TOPIC_PATTERN;
+    } 
 }
