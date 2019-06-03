@@ -25,10 +25,20 @@ const start = async function () {
         (topic,newMessage)=> {
             logger.info('New message for topic ' +topic +',  message length ' +newMessage.length);
         
-            return dtp.process(newMessage).then((d)=>{
-                console.log('Packet processed')
-            })
+            if(topic == process.env.INCOMING_DATA_PACKET_TOPIC){
 
+            
+                return dtp.process(newMessage).then((d)=>{
+                    console.log('Packet processed')
+                })
+            }
+            else{
+                return new Promise((resolve)=>{
+                    logger.info('Ignoring packet on topic ' +topic)
+                    resolve();
+                });
+                
+            }
         
     });
 
