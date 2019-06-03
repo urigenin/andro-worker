@@ -26,10 +26,9 @@ const start = async function () {
             logger.info('New message for topic ' +topic +',  message length ' +newMessage.length);
         
             if(topic == process.env.INCOMING_DATA_PACKET_TOPIC){
-
-            
+           
                 return dtp.process(newMessage).then((d)=>{
-                    console.log('Packet processed')
+                    logger.info('Packet processed for topic ' + topic) 
                 })
             }
             else{
