@@ -81,7 +81,9 @@ class MqttConsumer{
     subscribeDelayed(topicName){
         let me = this;
         setTimeout(()=>{
+           
             if(me.messageRecieved==null ){
+                me.logger.info('subscribeDelayed performs subscribe')
                 me.subscribe(topicName);
             }
         },1000);
