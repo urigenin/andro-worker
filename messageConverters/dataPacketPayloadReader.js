@@ -3,7 +3,7 @@ var protobuf = require("protobufjs");
 
 class DataPacketPayloadReader{
 
-    readMessage(protoFilePath,messageBuffer){
+    readMessage(protoFilePath,messageBuffer,logger){
        
         return new Promise((resolve,reject)=>{
 
@@ -14,9 +14,12 @@ class DataPacketPayloadReader{
                 // Obtain a message type
                 var messageProt = root.lookupType("ProtoData.DataPacket");
                        
+                
                 // Decode an Uint8Array (browser) or Buffer (node) to a message
                 var message = messageProt.decode(messageBuffer);
             
+                logger.info('DataPacketPayloadReader - decoded OK') 
+
                 var sensorData = [];
                 for(let i= 0 ;i<message.sensorData.length;i=i+2){
                     sensorData.push(message.sensorData.readUIntLE(i, 2))

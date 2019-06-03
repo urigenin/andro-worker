@@ -21,7 +21,7 @@ class DataPacketProcessor extends DataProcessorBase{
         try{
             let dataPacketPayloadReader = new DataPacketPayloadReader()
 
-            let msgProcessed  = await dataPacketPayloadReader.readMessage(filePath,rowMessage)
+            let msgProcessed  = await dataPacketPayloadReader.readMessage(filePath,rowMessage,this.logger)
 
             dal = await sqlDAL.initDAL(configManager.getSQLConfig());
             
