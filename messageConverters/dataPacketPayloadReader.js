@@ -14,7 +14,7 @@ class DataPacketPayloadReader{
                 // Obtain a message type
                 var messageProt = root.lookupType("ProtoData.DataPacket");
                        
-                logger.info('DataPacketPayloadReader - decode start ' + protoFilePath) ;
+                logger.debug('DataPacketPayloadReader - decode start ' + protoFilePath) ;
                 // Decode an Uint8Array (browser) or Buffer (node) to a message
                 var message = messageProt.decode(messageBuffer);
             
