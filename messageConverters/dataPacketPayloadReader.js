@@ -11,28 +11,34 @@ class DataPacketPayloadReader{
                 if (err)
                     return reject( err);
              
-                // Obtain a message type
-                var messageProt = root.lookupType("ProtoData.DataPacket");
-                       
-                logger.debug('DataPacketPayloadReader - decode start ' + protoFilePath) ;
-                // Decode an Uint8Array (browser) or Buffer (node) to a message
-                var message = messageProt.decode(messageBuffer);
-            
-                logger.info('DataPacketPayloadReader - decoded OK') 
+                try{
+                    // Obtain a message type
+                    var messageProt = root.lookupType("ProtoData.DataPacket");
+                        
+                    logger.debug('DataPacketPayloadReader - decode start ' + protoFilePath) ;
+                    // Decode an Uint8Array (browser) or Buffer (node) to a message
+                    var message = messageProt.decode(messageBuffer);
+                
+                    logger.info('DataPacketPayloadReader - decoded OK') 
 
-                var sensorData = [];
-                for(let i= 0 ;i<message.sensorData.length;i=i+2){
-                    sensorData.push(message.sensorData.readUIntLE(i, 2))
+                    var sensorData = [];
+                    for(let i= 0 ;i<message.sensorData.length;i=i+2){
+                        sensorData.push(message.sensorData.readUIntLE(i, 2))
+                    }
+                    message.sensorData =new Uint16Array( sensorData);
+
+                    var weightData = [];
+                    for(let i= 0 ;i<message.weightData.length;i=i+2){
+                        weightData.push(message.weightData.readUIntLE(i, 2))
+                    }
+                    message.weightData =new Uint16Array( weightData);
+
+                    resolve(message);
                 }
-                message.sensorData =new Uint16Array( sensorData);
-
-                var weightData = [];
-                for(let i= 0 ;i<message.weightData.length;i=i+2){
-                    weightData.push(message.weightData.readUIntLE(i, 2))
+                catch(ex){
+                    logger.error('DataPacketPayloadReader readMessage failed',ex);
+                    return  reject(ex);
                 }
-                message.weightData =new Uint16Array( weightData);
-
-                resolve(message);
 
             });
         })

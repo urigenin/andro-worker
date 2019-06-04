@@ -74,7 +74,8 @@ class DataPacketProcessor extends DataProcessorBase{
            throw ex;
         }
         finally{
-            dal.closeConnection()
+            if(dal)
+                dal.closeConnection()
         }
     }
 }

@@ -29,6 +29,9 @@ const start = async function () {
            
                 return dtp.process(newMessage).then((d)=>{
                     logger.info('Packet processed for topic ' + topic) 
+                },(ex)=>{
+                    logger.error('handleMessages failed',ex);
+                    throw ex;
                 })
             }
             else{
