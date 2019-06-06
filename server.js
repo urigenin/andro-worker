@@ -32,7 +32,7 @@ const start = async function () {
                 },(ex)=>{
                     logger.error('handleMessages failed - putting into error queue',ex);
                     //throw ex;
-                    return mqttConsumer.publish(INCOMING_ERROR_PACKET_TOPIC +'/datapacket',newMessage);
+                    return mqttConsumer.publish(process.env.INCOMING_ERROR_PACKET_TOPIC +'/datapacket',newMessage);
                 })
             }
             else{
