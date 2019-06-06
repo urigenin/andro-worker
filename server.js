@@ -30,8 +30,9 @@ const start = async function () {
                 return dtp.process(newMessage).then((d)=>{
                     logger.info('Packet processed for topic ' + topic) 
                 },(ex)=>{
-                    logger.error('handleMessages failed',ex);
-                    throw ex;
+                    logger.error('handleMessages failed - putting into error queue',ex);
+                    //throw ex;
+                    return mqttConsumer.publish(INCOMING_ERROR_PACKET_TOPIC +'/datapacket',newMessage);
                 })
             }
             else{
