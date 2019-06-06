@@ -30,9 +30,18 @@ const start = async function () {
                 return dtp.process(newMessage).then((d)=>{
                     logger.info('Packet processed for topic ' + topic) 
                 },(ex)=>{
-                    logger.error('handleMessages failed - putting into error queue',ex);
-                    //throw ex;
-                    return mqttConsumer.publish(process.env.INCOMING_ERROR_PACKET_TOPIC +'/datapacket',newMessage);
+                    
+                    //
+                    if(ex.toString().indexOf('index out of range')>=0)
+                    {
+                        logger.error('handleMessages failed - Protobuf issue  - putting into error queue',ex);
+                        return mqttConsumer.publish(process.env.INCOMING_ERROR_PACKET_TOPIC +'/datapacket',newMessage);
+                    }
+                    else
+                    {
+                        logger.error('handleMessages failed ',ex);
+                        throw ex;    
+                    }
                 })
             }
             else{
