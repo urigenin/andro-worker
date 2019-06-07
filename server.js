@@ -8,7 +8,7 @@ const logger= loggerLib.initialize(winston);
 
 const start = async function () {
 
-    logger.info('Worker started ');
+    
 
     let mqttConsumer =  new MqttConsumer(logger);
     let dtp = new DataPacketProcessor(logger)
@@ -72,7 +72,7 @@ const start = async function () {
 }
 
 try{
-    logger.info('Server started!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    logger.info('Worker started!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
      start();
 
 }
