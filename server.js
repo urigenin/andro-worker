@@ -72,6 +72,7 @@ const start = async function () {
 }
 
 try{
+    logger.info('Server started!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
      start();
 
 }
