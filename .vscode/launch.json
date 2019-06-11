@@ -16,7 +16,7 @@
             "program": "${workspaceFolder}/server.js",
             "env": {
                 "INCOMING_DATA_PACKET_TOPIC":"incoming/poultry/datapacket",
-                "INCOMING_ERROR_PACKET_TOPIC":"incoming/error/poultry",
+                "INCOMING_ERROR_PACKET_TOPIC":"incoming/error/poultry/datapacket",
                 "INCOMING_TOPIC_PATTERN":"incoming/poultry/#",
                 "MQTT_BROKER_USER_NAME":"andro-worker",
                 "MQTT_BROKER_PASSWORD":"andr0w2019XAA",
