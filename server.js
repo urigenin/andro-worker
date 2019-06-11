@@ -57,16 +57,16 @@ const start = async function () {
 
 
 
-    // let mqttConsumer2 =  new MqttConsumer(logger);
+    let mqttConsumer2 =  new MqttConsumer(logger);
 
-    // await mqttConsumer2.connect(getMqttBrokerDetails(),'sender',(error)=>{
-    //     logger.error('Connection to MQTT, error')
-    // },()=>{
-    //     console.error('Connection to MQTT disconnected')
-    // },(topic,newMessage)=>{
-    //     console.log('New message for topic ' +topic +'  message ' +newMessage.toString())
-    // });
-    // await mqttConsumer2.publish(getIncomingDataPacketTopic(),"BBBB " + new Date().getTime());
+    await mqttConsumer2.connect(getMqttBrokerDetails(),'sender',(error)=>{
+        logger.error('Connection to MQTT, error')
+    },()=>{
+        console.error('Connection to MQTT disconnected')
+    },(topic,newMessage)=>{
+        console.log('New message for topic ' +topic +'  message ' +newMessage.toString())
+    });
+    await mqttConsumer2.publish(getIncomingDataPacketTopic(),"BBBB " + new Date().getTime());
  
     
 }
