@@ -34,8 +34,8 @@ const start = async function () {
                     logger.info('Data Packet processed for topic ' + topic) 
                 },(ex)=>{
                     
-                    //
-                    if(ex.toString().indexOf('index out of range')>=0)
+                    if(ex.toString().indexOf('index out of range')>=0 || 
+                    ex.toString().indexOf('invalid wire type')>=0)
                     {
                         logger.error('handleMessages failed - Protobuf issue  - putting into error queue',ex);
                         return mqttConsumer.publish(process.env.INCOMING_ERROR_PACKET_TOPIC +'/datapacket',newMessage);
@@ -53,10 +53,12 @@ const start = async function () {
                 },(ex)=>{
                     
                     //
-                    if(ex.toString().indexOf('index out of range')>=0)
+                    if(ex.toString().indexOf('index out of range')>=0 || 
+                    ex.toString().indexOf('invalid wire type')>=0)
+                    
                     {
                         logger.error('handleMessages TechData failed - Protobuf issue  - putting into error queue',ex);
-                        return mqttConsumer.publish(process.env.INCOMING_ERROR_PACKET_TOPIC +'/datapacket',newMessage);
+                        return mqttConsumer.publish(process.env.INCOMING_ERROR_PACKET_TOPIC +'/techData',newMessage);
                     }
                     else
                     {
