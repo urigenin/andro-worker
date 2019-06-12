@@ -70,7 +70,7 @@ class DataPacketProcessor extends DataProcessorBase{
             
         }
         catch(ex){
-            me.logger.error('handleGetDataModelTypes failed ' +progresslog,ex);
+            me.logger.error('dataPacket process failed ' +progresslog,ex);
            throw ex;
         }
         finally{

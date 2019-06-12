@@ -45,7 +45,7 @@ class TechDataProcessor extends DataProcessorBase{
             
         }
         catch(ex){
-            me.logger.error('handleGetDataModelTypes failed ' +progresslog,ex);
+            me.logger.error('techData process failed ' +progresslog,ex);
            throw ex;
         }
         finally{
