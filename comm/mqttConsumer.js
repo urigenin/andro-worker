@@ -56,14 +56,15 @@ class MqttConsumer{
                 this.logger.error('publish - No connection to the broker');
                 return reject('No connection to the broker');
             }
+            resolve();
 
-            this.client.publish(topicName,data,{qos:1}, function (err) {
-                if (err!=null) {
-                    me.logger.error('Publish failed',err);
-                    return reject(err);
-                }
-                resolve();
-            });
+            // this.client.publish(topicName,data,{qos:1}, function (err) {
+            //     if (err!=null) {
+            //         me.logger.error('Publish failed',err);
+            //         return reject(err);
+            //     }
+            //     resolve();
+            // });
         });
     }
     handleMessages(onNewMessage){
