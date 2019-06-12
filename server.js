@@ -38,7 +38,10 @@ const start = async function () {
                     ex.toString().indexOf('invalid wire type')>=0)
                     {
                         logger.error('handleMessages failed - Protobuf issue  - putting into error queue',ex);
-                        return mqttConsumer.publish(process.env.INCOMING_ERROR_PACKET_TOPIC +'/datapacket',newMessage);
+                        let errorQ = process.env.INCOMING_ERROR_PACKET_TOPIC +'/datapacket';
+                        return mqttConsumer.publish(errorQ,newMessage).then(()=>{
+                            logger.info('handleMessages  - published failed message to queue ' +errorQ)
+                        })
                     }
                     else
                     {
@@ -57,8 +60,11 @@ const start = async function () {
                     ex.toString().indexOf('invalid wire type')>=0)
                     
                     {
-                        logger.error('handleMessages TechData failed - Protobuf issue  - putting into error queue',ex);
-                        return mqttConsumer.publish(process.env.INCOMING_ERROR_PACKET_TOPIC +'/techData',newMessage);
+                        logger.error('handleMessages failed - Protobuf issue  - putting TechData into error queue',ex);
+                        let errorQ = process.env.INCOMING_ERROR_PACKET_TOPIC +'/techData';
+                        return mqttConsumer.publish(errorQ,newMessage).then(()=>{
+                            logger.info('handleMessages  - published techData failed message to queue ' +errorQ)
+                        })
                     }
                     else
                     {
