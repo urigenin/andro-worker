@@ -40,7 +40,7 @@ const start = async function () {
                         logger.error('handleMessages failed - Protobuf issue  - putting into error queue',ex);
                         let errorQ = process.env.INCOMING_ERROR_PACKET_TOPIC +'/datapacket';
                         return mqttConsumer.publish(errorQ,newMessage).then(()=>{
-                            logger.info('handleMessages  - published failed message to queue ' +errorQ)
+                            logger.info('handleMessages  - published BAD message to queue ' +errorQ)
                         })
                     }
                     else
@@ -63,7 +63,7 @@ const start = async function () {
                         logger.error('handleMessages failed - Protobuf issue  - putting TechData into error queue',ex);
                         let errorQ = process.env.INCOMING_ERROR_PACKET_TOPIC +'/techData';
                         return mqttConsumer.publish(errorQ,newMessage).then(()=>{
-                            logger.info('handleMessages  - published techData failed message to queue ' +errorQ)
+                            logger.info('handleMessages  - published techData BAD message to queue ' +errorQ)
                         })
                     }
                     else
