@@ -73,8 +73,17 @@ class MqttConsumer{
             me.messageRecieved = true;
         //me.client.on('message', function (topic, message) { 
             me.logger.debug('MqttConsumer - new message arrived on topic ' +message.topic)
-            onNewMessage(message.topic, message.payload).then(()=>{
-                callback();
+            onNewMessage(message.topic, message.payload).then((result)=>{
+                if(result!=null && result.publish!=null){
+                     me.publish(result.publish.queue,result.publish.message).then(()=>{
+                        me.logger.info('Publish to queue '+ result.publish.queue + ' message of length ' + result.publish.message.legth );
+                       
+                     })
+                     callback();
+                }
+                else{
+                    callback();
+                }
             })
         };
     }

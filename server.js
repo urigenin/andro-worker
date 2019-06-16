@@ -11,16 +11,16 @@ const logger= loggerLib.initialize(winston);
 const start = async function () {
 
     
-    let mqttConsumerError =  new MqttConsumer(logger);
+    // let mqttConsumerError =  new MqttConsumer(logger);
 
-    await mqttConsumerError.connect(getMqttBrokerDetails(),'error_writer',(error)=>{
-        logger.error('Connection to Error MQTT, error')
-    },()=>{
-        console.error('Connection to Error MQTT disconnected')
-    },(topic,newMessage)=>{
-        logger.error('Error New message for topic ' +topic +'  message ' +newMessage.toString())
-    });
-    logger.info('MqttConsumerError connected OK')
+    // await mqttConsumerError.connect(getMqttBrokerDetails(),'error_writer',(error)=>{
+    //     logger.error('Connection to Error MQTT, error')
+    // },()=>{
+    //     console.error('Connection to Error MQTT disconnected')
+    // },(topic,newMessage)=>{
+    //     logger.error('Error New message for topic ' +topic +'  message ' +newMessage.toString())
+    // });
+    // logger.info('MqttConsumerError connected OK')
 
 
 
@@ -44,16 +44,21 @@ const start = async function () {
            
                 return dtp.process(newMessage).then((d)=>{
                     logger.info('Data Packet processed for topic ' + topic) 
+                    //success
                 },(ex)=>{
                     
-                    if(ex.toString().indexOf('index out of range')>=0 || 
+                    if(ex.toString().indexOf('out of range')>=0 || 
                     ex.toString().indexOf('invalid wire type')>=0)
                     {
                         logger.error('handleMessages failed - Protobuf issue  - putting into error queue',ex);
                         let errorQ = process.env.INCOMING_ERROR_PACKET_TOPIC +'/datapacket';
-                        return mqttConsumerError.publish(errorQ,newMessage).then(()=>{
-                            logger.info('handleMessages  - published BAD message to queue ' +errorQ)
-                        })
+                        
+                        return {
+                           
+                            publish:  {queue:errorQ,message:newMessage}
+                            
+                        }
+
                     }
                     else
                     {
@@ -68,15 +73,20 @@ const start = async function () {
                 },(ex)=>{
                     
                     //
-                    if(ex.toString().indexOf('index out of range')>=0 || 
+                    if(ex.toString().indexOf('out of range')>=0 || 
                     ex.toString().indexOf('invalid wire type')>=0)
                     
                     {
                         logger.error('handleMessages failed - Protobuf issue  - putting TechData into error queue',ex);
                         let errorQ = process.env.INCOMING_ERROR_PACKET_TOPIC +'/techData';
-                        return mqttConsumerError.publish(errorQ,newMessage).then(()=>{
-                            logger.info('handleMessages  - published techData BAD message to queue ' +errorQ)
-                        })
+                        return {
+                           
+                            publish:{queue:errorQ,message:newMessage}
+                            
+                        }
+                        // return mqttConsumerError.publish(errorQ,newMessage).then(()=>{
+                        //     logger.info('handleMessages  - published techData BAD message to queue ' +errorQ)
+                        // })
                     }
                     else
                     {

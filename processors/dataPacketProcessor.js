@@ -61,7 +61,7 @@ class DataPacketProcessor extends DataProcessorBase{
                 progresslog="3"
                 let newId = await incomingMessageService.addMessage(dataForStore)
                 progresslog="4"
-                this.logger.info('DataPacketProcessor- saved new incomming message from ' + consumerData.deviceUID + ' with id ' +newId )
+                this.logger.info('DataPacketProcessor- saved new incoming message from ' + consumerData.deviceUID + ' with id ' +newId )
             }
             else{
                 this.logger.warn('No consumer found for message for device ' +msgProcessed.devUid);
