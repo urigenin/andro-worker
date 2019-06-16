@@ -50,7 +50,7 @@ const start = async function () {
                     if(ex.toString().indexOf('out of range')>=0 || 
                     ex.toString().indexOf('invalid wire type')>=0)
                     {
-                        logger.error('handleMessages failed - Protobuf issue  - putting into error queue',ex);
+                        logger.info('handleMessages failed - Protobuf issue  - putting into error queue' );
                         let errorQ = process.env.INCOMING_ERROR_PACKET_TOPIC +'/datapacket';
                         
                         return {
@@ -77,7 +77,7 @@ const start = async function () {
                     ex.toString().indexOf('invalid wire type')>=0)
                     
                     {
-                        logger.error('handleMessages failed - Protobuf issue  - putting TechData into error queue',ex);
+                        logger.info('handleMessages failed - Protobuf issue  - putting TechData into error queue');
                         let errorQ = process.env.INCOMING_ERROR_PACKET_TOPIC +'/techData';
                         return {
                            
