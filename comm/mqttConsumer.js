@@ -76,7 +76,7 @@ class MqttConsumer{
             onNewMessage(message.topic, message.payload).then((result)=>{
                 if(result!=null && result.publish!=null){
                      me.publish(result.publish.queue,result.publish.message).then(()=>{
-                        me.logger.info('Publish to queue '+ result.publish.queue + ' message of length ' + result.publish.message.legth );
+                        me.logger.info('Publish to queue '+ result.publish.queue + ' message of length ' + result.publish.message.length );
                        
                      })
                      callback();
