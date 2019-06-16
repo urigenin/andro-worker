@@ -19,7 +19,9 @@ const start = async function () {
         console.error('Connection to Error MQTT disconnected')
     },(topic,newMessage)=>{
         logger.error('Error New message for topic ' +topic +'  message ' +newMessage.toString())
-    });
+    }).then(()=>{
+        logger.info('MqttConsumerError connected OK')
+    })
 
 
 
