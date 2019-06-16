@@ -11,6 +11,18 @@ const logger= loggerLib.initialize(winston);
 const start = async function () {
 
     
+    let mqttConsumerError =  new MqttConsumer(logger);
+
+    await mqttConsumerError.connect(getMqttBrokerDetails(),'error_writer',(error)=>{
+        logger.error('Connection to Error MQTT, error')
+    },()=>{
+        console.error('Connection to Error MQTT disconnected')
+    },(topic,newMessage)=>{
+        logger.error('Error New message for topic ' +topic +'  message ' +newMessage.toString())
+    });
+
+
+
 
     let mqttConsumer =  new MqttConsumer(logger);
     let dtp = new DataPacketProcessor(logger)
@@ -39,7 +51,7 @@ const start = async function () {
                     {
                         logger.error('handleMessages failed - Protobuf issue  - putting into error queue',ex);
                         let errorQ = process.env.INCOMING_ERROR_PACKET_TOPIC +'/datapacket';
-                        return mqttConsumer.publish(errorQ,newMessage).then(()=>{
+                        return mqttConsumerError.publish(errorQ,newMessage).then(()=>{
                             logger.info('handleMessages  - published BAD message to queue ' +errorQ)
                         })
                     }
@@ -62,7 +74,7 @@ const start = async function () {
                     {
                         logger.error('handleMessages failed - Protobuf issue  - putting TechData into error queue',ex);
                         let errorQ = process.env.INCOMING_ERROR_PACKET_TOPIC +'/techData';
-                        return mqttConsumer.publish(errorQ,newMessage).then(()=>{
+                        return mqttConsumerError.publish(errorQ,newMessage).then(()=>{
                             logger.info('handleMessages  - published techData BAD message to queue ' +errorQ)
                         })
                     }
