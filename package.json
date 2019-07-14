@@ -17,7 +17,7 @@
     "url": "https://github.com/urigenin/andro-worker/issues"
   },
   "dependencies": {
-    "async": "^2.6.0",
+    "async": "^3.1.0",
     "dotenv": "^4.0.0",
     "fs": "0.0.1-security",
     "good": "^7.3.0",
