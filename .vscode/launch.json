@@ -16,8 +16,11 @@
             "program": "${workspaceFolder}/server.js",
             "env": {
                 "INCOMING_DATA_PACKET_TOPIC":"incoming/poultry/datapacket",
-                "INCOMING_ERROR_PACKET_TOPIC":"incoming/error/poultry",
-                "INCOMING_TOPIC_PATTERN":"incoming/poultry/#",
+                "INCOMING_CATTLE_DATA_PACKET_TOPIC":"incoming/cattle/cattledatapacket",
+                "INCOMING_TECH_DATA_PACKET_TOPIC":"incoming/poultry/techdata",
+                "INCOMING_ERROR_PACKET_TOPIC":"incoming/error",
+
+                "INCOMING_TOPIC_PATTERN":"incoming/#",
                 "MQTT_BROKER_USER_NAME":"andro-worker",
                 "MQTT_BROKER_PASSWORD":"andr0w2019XAA",
                 "MQTT_CLIENT_ID":"andro-worker-iot-uri",

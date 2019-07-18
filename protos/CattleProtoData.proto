@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package CattleProtoData;
+
+
+message CattleDataPacket
+{
+  bytes  cattleId        =  1; // Cattle ID, 13 bytes
+  uint32 weightDataA     =  2; // Weight A, units: grams
+  uint32 weightDataB     =  3; // Weight B, units: grams
+  bytes  sensorData      =  4; // Up to 16 bytes, maps to 8 uint16's in little endian
+  string gpsString       =  5; // Format: GGA (GPS Fix Data) - Up to 66 chars (without null terminator) 
+  uint32 rssi            =  6; // LoRa RSSI, range: 0 - 10
+  uint32 battState       =  7; // Battery state, range: 0 - 100
+  string timeStamp       =  8; // Format: dd/mm/yyyy hh:mm:ss - 19 chars (without null terminator)
+  string hardwareVersion =  9; // Format: XX.XX - 5 chars (without null terminator)
+  string firmwareVersion = 10; // Format: XX.XX.XXXXX - 11 chars (without null terminator)
+  uint32 devUid          = 11; // Device UID
+}
+
+// 
+// using GGA - Global Positioning System Fix Data (GPS Fix Data)
+// 
+// Receives a string: "<UTC>,<latitude>,<longitude>,<hdop>,<altitude>,<fix>,<cog>,<spkm>,<spkn>,<date>,<nsat>"
+// 
+// The format of UTC: "hhmmss.sss"
+// The format of latitude: "ddmm.mmmmN" or "ddmm.mmmmS" (dd are 0° to 89°, mm are (1/60)° to (59/60)° and mmmm are (1/600000)° to (9999/600000)°, N-north S-south)
+// The format of longitude: "dddmm.mmmmE" or "dddmm.mmmmW" (ddd are 0° to 179°, mm are (1/60)° to (59/60)° and mmmm are (1/600000)° to (9999/600000)°, E-east W-west)
+// The format of hdop (horizotal precision): "x.x" or "xx.x" (0.5 to 99.9)
+// The format of altitude - "0.0" to "xxxxx.x" meters from the sea level (my question is, what will be at the dead sea...)
+// fix, cog, spkm, spkn and date will be "0" or "0.0" because we will use GGA.
+// The format of nsat (number of satellites): "00" to "12"
+// 
+// There is no white spaces in the string. To separate between two themes there is a comma.
+// 

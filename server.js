@@ -5,7 +5,7 @@ const {getMqttBrokerDetails,getIncomingDataPacketTopic,getIncomingTopicPattern} 
 const loggerLib = require('./utils/logger');
 const DataPacketProcessor = require('./processors/dataPacketProcessor')
 const TechDataProcessor = require('./processors/techDataProcessor')
-
+const CattleDataPacketProcessor= require('./processors/cattleDataPacketProcessor')
 const logger= loggerLib.initialize(winston);
 
 const start = async function () {
@@ -22,11 +22,15 @@ const start = async function () {
     // });
     // logger.info('MqttConsumerError connected OK')
 
-
-
     let mqttConsumer =  new MqttConsumer(logger);
-    let dtp = new DataPacketProcessor(logger)
+
+    let dtp = new DataPacketProcessor(logger);
+    let cattleDtp = new CattleDataPacketProcessor(logger);    
     let tchp = new TechDataProcessor(logger);
+    let processors ={};
+    processors[process.env.INCOMING_DATA_PACKET_TOPIC] = {module: dtp};
+    processors[process.env.INCOMING_CATTLE_DATA_PACKET_TOPIC] =  {module: cattleDtp};
+    processors[process.env.INCOMING_TECH_DATA_PACKET_TOPIC] =  {module: tchp};
 
     await mqttConsumer.connect(getMqttBrokerDetails(),getMqttBrokerDetails().clientId,(error)=>{
         logger.error('Connection to MQTT, error')
@@ -38,23 +42,25 @@ const start = async function () {
 
     mqttConsumer.handleMessages(
         (topic,newMessage)=> {
-            logger.info('New message for topic ' +topic +',  message length ' +newMessage.length);
-        
-            if(topic == process.env.INCOMING_DATA_PACKET_TOPIC){
-           
-                return dtp.process(newMessage).then((d)=>{
-                    logger.info('Data Packet processed for topic ' + topic) 
-                    //success
+            try{
+                logger.info('New message for topic ' +topic +',  message length ' +newMessage.length);
+            
+                let processorRecord = processors[topic];
+                let prProcess = processorRecord.module.process(newMessage);
+
+                return prProcess.then((d)=>{
+                    logger.info('Processed for topic ' + topic) 
+    
                 },(ex)=>{
                     
                     if(ex.toString().indexOf('out of range')>=0 || 
                     ex.toString().indexOf('invalid wire type')>=0)
                     {
                         logger.info('handleMessages failed - Protobuf issue  - putting into error queue' );
-                        let errorQ = process.env.INCOMING_ERROR_PACKET_TOPIC +'/datapacket';
-                        
+                        let topicParts  = topic.split('/');
+                        let errorQ =process.env.INCOMING_ERROR_PACKET_TOPIC +'/' + topicParts[topicParts.length-2]+'/' +topicParts[topicParts.length-1]
                         return {
-                           
+                        
                             publish:  {queue:errorQ,message:newMessage}
                             
                         }
@@ -67,35 +73,13 @@ const start = async function () {
                     }
                 })
             }
-            else{
-                return tchp.process(newMessage).then((d)=>{
-                    logger.info('TechData Packet processed for topic ' + topic) 
-                },(ex)=>{
-                    
-                    //
-                    if(ex.toString().indexOf('out of range')>=0 || 
-                    ex.toString().indexOf('invalid wire type')>=0)
-                    
-                    {
-                        logger.info('handleMessages failed - Protobuf issue  - putting TechData into error queue');
-                        let errorQ = process.env.INCOMING_ERROR_PACKET_TOPIC +'/techData';
-                        return {
-                           
-                            publish:{queue:errorQ,message:newMessage}
-                            
-                        }
-                        // return mqttConsumerError.publish(errorQ,newMessage).then(()=>{
-                        //     logger.info('handleMessages  - published techData BAD message to queue ' +errorQ)
-                        // })
-                    }
-                    else
-                    {
-                        logger.error('handleMessages TechData failed ',ex);
-                        throw ex;    
-                    }
-                })
-                
+            catch(ex){
+                logger.error('handleMessages failed ',ex);
+                throw ex;    
             }
+            
+                
+            
         
     });
 
