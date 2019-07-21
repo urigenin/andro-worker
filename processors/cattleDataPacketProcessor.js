@@ -53,6 +53,7 @@ class CattleDataPacketProcessor extends DataProcessorBase{
                 mpayloadToBeSaved.timeStamp = msgProcessed.timeStamp;
                 mpayloadToBeSaved.rssi = msgProcessed.rssi;
                 mpayloadToBeSaved.battState = msgProcessed.battState;
+                mpayloadToBeSaved.gpsString = msgProcessed.gpsString;
                 progresslog="2";
                 dataForStore.payload= mpayloadToBeSaved;
                 
