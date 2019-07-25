@@ -26,7 +26,7 @@
                 "MQTT_CLIENT_ID":"andro-worker-iot-uri",
                 "LOG_FILE_LOCATION":"c:\\temp\\andro-worker-log",
                 "MQTT_BROKER_ADDRESS":"mqtts://b-3f4b6a80-e5eb-4794-93de-6a211d3954a9-1.mq.us-east-1.amazonaws.com:8883",
-                "DATABASE_PATH":"mssql://androworker:andro123$@ec2-52-90-177-78.compute-1.amazonaws.com/Andromeda?requestTimeout=30000"
+                "DATABASE_PATH":"mssql://androworker:andro123$@ec2-54-237-223-240.compute-1.amazonaws.com/Andromeda?requestTimeout=30000"
             }
         }
     ]

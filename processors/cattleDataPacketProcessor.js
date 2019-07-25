@@ -51,7 +51,9 @@ class CattleDataPacketProcessor extends DataProcessorBase{
                 mpayloadToBeSaved.firmwareVersion = msgProcessed.firmwareVersion;
                 mpayloadToBeSaved.hardwareVersion = msgProcessed.hardwareVersion;
                 mpayloadToBeSaved.timeStamp = msgProcessed.timeStamp;
-                mpayloadToBeSaved.rssi = msgProcessed.rssi;
+                mpayloadToBeSaved.rssiLora = msgProcessed.rssiLora;
+                mpayloadToBeSaved.rssiRfid = msgProcessed.rssiRfid;
+                mpayloadToBeSaved.rssiCsq = msgProcessed.rssiCsq;
                 mpayloadToBeSaved.battState = msgProcessed.battState;
                 mpayloadToBeSaved.gpsString = msgProcessed.gpsString;
                 progresslog="2";
