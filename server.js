@@ -46,6 +46,13 @@ const start = async function () {
                 logger.info('New message for topic ' +topic +',  message length ' +newMessage.length);
             
                 let processorRecord = processors[topic];
+                if (processorRecord==null){
+                    logger.warn('Skipping messagr ' + topic)
+                    return new Promise((r)=>{
+                        r();
+                    })
+                }
+
                 let prProcess = processorRecord.module.process(newMessage);
 
                 return prProcess.then((d)=>{
