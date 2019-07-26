@@ -36,7 +36,7 @@ class TechDataProcessor extends DataProcessorBase{
                   
                     recieveDate: new Date()
                 };
-                this.logger.info('####TechPacketProcessor####- accepted incomming message from ' + consumerData.deviceUID + ' with ts ' +msgProcessed.timeStamp )
+                this.logger.info('####TechPacketProcessor####- accepted incomming message from ' + consumerData.deviceUID + ' with ts ' +msgProcessed.timeStamp  +' weight ' , msgProcessed.weightData )
             }
             else{
                 this.logger.warn('####TechPacketProcessor####- No consumer found for TechData message for device ' +msgProcessed.devUid);

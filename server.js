@@ -47,7 +47,7 @@ const start = async function () {
             
                 let processorRecord = processors[topic];
                 if (processorRecord==null){
-                    logger.warn('Skipping messagr ' + topic)
+                    logger.warn('Skipping message ' + topic)
                     return new Promise((r)=>{
                         r();
                     })
