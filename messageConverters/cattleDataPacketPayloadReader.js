@@ -34,8 +34,15 @@ class CattleDataPacketPayloadReader{
                         }
 
                         var cattleIdHex = '';
-                        for(let i= 0 ;i<message.cattleId.length-1;i++){
-                            cattleIdHex +=  ((message.cattleId[i] & 0xFF).toString(16));
+                        if(message.cattleId.length>0 &&  message.cattleId[0]!=86){
+                            message.isFdx =  message.cattleId[0]==16;
+                            
+                            for(let i= 3 ;i<message.cattleId.length-1;i++){
+                                cattleIdHex +=  ((message.cattleId[i] & 0xFF).toString(16));
+                            }
+                        }
+                        else{
+                            logger.info('CattleDataPacketPayloadReader - calibration packet cattle id identified') 
                         }
                         message.timeStampAsDate  =  new Date(Number( message.timeStamp) *1000).toUTCString()
 

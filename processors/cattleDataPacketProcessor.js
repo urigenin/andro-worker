@@ -36,7 +36,7 @@ class CattleDataPacketProcessor extends DataProcessorBase{
                     recieveDate: new Date()
                 };
                 let newSensorDataArray = [];
-                let mpayloadToBeSaved = {};
+                let mpayloadToBeSaved = Object.assign({},msgProcessed);
                 for(let i = 0 ;i< msgProcessed.sensorData.length;i++){
                     let val =Number( msgProcessed.sensorData[i]);
                     newSensorDataArray.push(val);
@@ -44,18 +44,6 @@ class CattleDataPacketProcessor extends DataProcessorBase{
 
                 progresslog="1";
                 mpayloadToBeSaved.sensorData=newSensorDataArray;
-                mpayloadToBeSaved.timeStampAsDate = msgProcessed.timeStampAsDate;
-                mpayloadToBeSaved.cattleId = msgProcessed.cattleId;
-                mpayloadToBeSaved.weightDataA = msgProcessed.weightDataA;
-                mpayloadToBeSaved.weightDataB = msgProcessed.weightDataB;
-                mpayloadToBeSaved.firmwareVersion = msgProcessed.firmwareVersion;
-                mpayloadToBeSaved.hardwareVersion = msgProcessed.hardwareVersion;
-                mpayloadToBeSaved.timeStamp = msgProcessed.timeStamp;
-                mpayloadToBeSaved.rssiLora = msgProcessed.rssiLora;
-                mpayloadToBeSaved.rssiRfid = msgProcessed.rssiRfid;
-                mpayloadToBeSaved.rssiCsq = msgProcessed.rssiCsq;
-                mpayloadToBeSaved.battState = msgProcessed.battState;
-                mpayloadToBeSaved.gpsString = msgProcessed.gpsString;
                 progresslog="2";
                 dataForStore.payload= mpayloadToBeSaved;
                 
