@@ -18,7 +18,7 @@
                 "INCOMING_DATA_PACKET_TOPIC":"incoming/poultry/datapacket",
                 "INCOMING_CATTLE_DATA_PACKET_TOPIC":"incoming/cattle/cattledatapacket",
                 "INCOMING_TECH_DATA_PACKET_TOPIC":"incoming/poultry/techdata",
-                "INCOMING_ERROR_PACKET_TOPIC":"incoming/error",
+                "INCOMING_ERROR_PACKET_TOPIC":"incoming_error",
 
                 "INCOMING_TOPIC_PATTERN":"incoming/#",
                 "MQTT_BROKER_USER_NAME":"andro-worker",
