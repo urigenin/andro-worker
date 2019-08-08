@@ -42,7 +42,7 @@ class CattleDataPacketPayloadReader{
                             }
                         }
                         else{
-                            logger.info('CattleDataPacketPayloadReader - no valid cattle if - possible calibration') 
+                            logger.info('CattleDataPacketPayloadReader - no valid cattle id - possible calibration') 
                         }
                         message.timeStampAsDate  =  new Date(Number( message.timeStamp) *1000).toUTCString()
 
