@@ -27,35 +27,37 @@ class CattleDataPacketProcessor extends DataProcessorBase{
             
             let deviceService = new DeviceService(dal,this.logger);
             let consumerData = await deviceService.getDeviceConsumer(msgProcessed.devUid);
+            let consumerIdForTheData = null;
             if(consumerData!=null){
-                let dataForStore = {
-                    deviceUID:consumerData.deviceUID,
-                    dataConsumerId:consumerData.dataConsumerId,
-                    messageTypeId:MessageTypes.MESSAGE_CATTLE_DATA_PACKET,
-                  
-                    recieveDate: new Date()
-                };
-                let newSensorDataArray = [];
-                let mpayloadToBeSaved = Object.assign({},msgProcessed);
-                for(let i = 0 ;i< msgProcessed.sensorData.length;i++){
-                    let val =Number( msgProcessed.sensorData[i]);
-                    newSensorDataArray.push(val);
-                }
-
-                progresslog="1";
-                mpayloadToBeSaved.sensorData=newSensorDataArray;
-                progresslog="2";
-                dataForStore.payload= mpayloadToBeSaved;
-                
-                let incomingMessageService = new IncomingMessageService(dal,this.logger);
-                progresslog="3"
-                let newId = await incomingMessageService.addMessage(dataForStore)
-                progresslog="4"
-                this.logger.info('CattleDataPacketProcessor- saved new incoming message from ' + consumerData.deviceUID + ' with id ' +newId )
+                consumerIdForTheData= consumerData.dataConsumerId
             }
             else{
                 this.logger.warn('No consumer found for message for device ' +msgProcessed.devUid);
             }
+            let dataForStore = {
+                deviceUID:msgProcessed.devUid,
+                dataConsumerId:consumerIdForTheData,
+                messageTypeId:MessageTypes.MESSAGE_CATTLE_DATA_PACKET,                  
+                recieveDate: new Date()
+            };
+            let newSensorDataArray = [];
+            let mpayloadToBeSaved = Object.assign({},msgProcessed);
+            for(let i = 0 ;i< msgProcessed.sensorData.length;i++){
+                let val =Number( msgProcessed.sensorData[i]);
+                newSensorDataArray.push(val);
+            }
+
+            progresslog="1";
+            mpayloadToBeSaved.sensorData=newSensorDataArray;
+            progresslog="2";
+            dataForStore.payload= mpayloadToBeSaved;
+            
+            let incomingMessageService = new IncomingMessageService(dal,this.logger);
+            progresslog="3"
+            let newId = await incomingMessageService.addMessage(dataForStore)
+            progresslog="4"
+            this.logger.info('CattleDataPacketProcessor- saved new incoming message from ' + consumerData.deviceUID + ' with id ' +newId )
+
             
         }
         catch(ex){
