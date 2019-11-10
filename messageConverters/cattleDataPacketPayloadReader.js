@@ -34,8 +34,8 @@ class CattleDataPacketPayloadReader{
                         }
 
                         var cattleIdHex = '';
-                        if(message.cattleId.length>0 &&  message.cattleId[0]<20){
-                            message.isFdx =  message.cattleId[0]==16;
+                        if(message.cattleId.length>0 &&  message.cattleId[0]<21){
+                            message.isFdx =  message.cattleId[0]==0x0F; //FDX
                             
                             for(let i= 3 ;i<message.cattleId.length-1;i++){
                                 cattleIdHex +=  ((message.cattleId[i] & 0xFF).toString(16));
