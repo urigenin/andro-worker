@@ -38,7 +38,11 @@ class CattleDataPacketPayloadReader{
                             message.isFdx =  message.cattleId[0]==0x0F; //FDX
                             
                             for(let i= 3 ;i<message.cattleId.length-1;i++){
-                                cattleIdHex +=  ((message.cattleId[i] & 0xFF).toString(16));
+                                let hexdValue = ((message.cattleId[i] & 0xFF).toString(16));
+                                if(hexdValue.length==1){
+                                    hexdValue = '0' + hexdValue;
+                                }
+                                cattleIdHex +=  hexdValue;
                             }
                         }
                         else{
