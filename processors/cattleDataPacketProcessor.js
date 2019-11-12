@@ -7,7 +7,7 @@ const DataProcessorBase = require('./dataProcessorBase')
 const {MessageTypes}  = require('./../consts');
 const sqlDAL  = require('./../utils/sqlDALFactory')
 const DataPacketPayloadReader = require('./../messageConverters/cattleDataPacketPayloadReader')
-let filePath = path.join(__dirname,'./../protos/CattleProtoData.proto');
+let filePath = path.join(__dirname,'./../protos/CattleProtoDataExt.proto');
 
 
 class CattleDataPacketProcessor extends DataProcessorBase{
@@ -45,6 +45,14 @@ class CattleDataPacketProcessor extends DataProcessorBase{
             for(let i = 0 ;i< msgProcessed.sensorData.length;i++){
                 let val =Number( msgProcessed.sensorData[i]);
                 newSensorDataArray.push(val);
+            }
+
+            var weightData = [];
+            if(message.weightDynamic!=null){
+                for(let i= 0 ;i<message.weightDynamic.length;i=i+2){
+                    weightData.push(message.weightDynamic.readUIntLE(i, 4))
+                }
+                mpayloadToBeSaved.weightDynamicData =new Uint32Array( weightData);
             }
 
             progresslog="1";

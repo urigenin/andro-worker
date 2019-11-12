@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package CattleProtoData;
+
+message CattleDataPacket
+{
+  bytes  cattleId        =  1; // Up to 19 bytes
+  uint32 weightDataA     =  2;
+  uint32 weightDataB     =  3;
+  bytes  weightDynamic   =  4; // Up to 80 bytes, maps to 20 uint32's in little endian, units: grams
+  bytes  sensorData      =  5; // Up to 16 bytes, maps to 8 uint16's in little endian
+  string gpsString       =  6; // As was before
+  uint32 rssiCsq         =  7;
+  uint32 rssiLora        =  8; // LoRa RSSI, range: 0 - 10
+  uint32 rssiRfid        =  9;
+  uint32 battState       = 10; // Battery state, range: 0 - 100
+  string timeStamp       = 11; // Format: dd/mm/yyyy hh:mm:ss - 19 chars (without null terminator)
+  string hardwareVersion = 12; // Format: XX.XX - 5 chars (without null terminator)
+  string firmwareVersion = 13; // Format: XX.XX.XXXXX - 11 chars (without null terminator)
+  uint32 devUid          = 14; // Device UID
+}
+
