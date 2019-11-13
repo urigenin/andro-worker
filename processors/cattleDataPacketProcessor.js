@@ -52,8 +52,9 @@ class CattleDataPacketProcessor extends DataProcessorBase{
                 for(let i= 0 ;i<msgProcessed.weightDynamic.length;i=i+4){
                     weightData.push(msgProcessed.weightDynamic.readUIntLE(i, 4))
                 }
-                mpayloadToBeSaved.weightDynamicData =new Uint32Array( weightData);
+                mpayloadToBeSaved.weightDynamicData = weightData;
             }
+
 
             progresslog="1";
             mpayloadToBeSaved.sensorData=newSensorDataArray;
