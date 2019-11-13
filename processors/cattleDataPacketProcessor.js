@@ -48,9 +48,9 @@ class CattleDataPacketProcessor extends DataProcessorBase{
             }
 
             var weightData = [];
-            if(message.weightDynamic!=null){
-                for(let i= 0 ;i<message.weightDynamic.length;i=i+2){
-                    weightData.push(message.weightDynamic.readUIntLE(i, 4))
+            if(msgProcessed.weightDynamic!=null){
+                for(let i= 0 ;i<msgProcessed.weightDynamic.length;i=i+4){
+                    weightData.push(msgProcessed.weightDynamic.readUIntLE(i, 4))
                 }
                 mpayloadToBeSaved.weightDynamicData =new Uint32Array( weightData);
             }
@@ -64,7 +64,7 @@ class CattleDataPacketProcessor extends DataProcessorBase{
             progresslog="3"
             let newId = await incomingMessageService.addMessage(dataForStore)
             progresslog="4"
-            this.logger.info('CattleDataPacketProcessor- saved new incoming message from ' + consumerData.deviceUID + ' with id ' +newId )
+            this.logger.info('CattleDataPacketProcessor- saved new incoming message from ' + msgProcessed.devUid + ' with id ' +newId )
 
             
         }
