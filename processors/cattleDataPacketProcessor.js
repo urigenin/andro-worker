@@ -55,7 +55,7 @@ class CattleDataPacketProcessor extends DataProcessorBase{
                 mpayloadToBeSaved.weightDynamicData = weightData;
                 delete msgProcessed.weightDynamic;
             }
-
+            delete mpayloadToBeSaved.devUid;
 
             progresslog="1";
             mpayloadToBeSaved.sensorData=newSensorDataArray;
