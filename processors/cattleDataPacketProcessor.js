@@ -53,6 +53,7 @@ class CattleDataPacketProcessor extends DataProcessorBase{
                     weightData.push(msgProcessed.weightDynamic.readUIntLE(i, 4))
                 }
                 mpayloadToBeSaved.weightDynamicData = weightData;
+                delete msgProcessed.weightDynamic;
             }
 
 
