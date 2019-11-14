@@ -7,7 +7,7 @@ const DataProcessorBase = require('./dataProcessorBase')
 const {MessageTypes}  = require('./../consts');
 const sqlDAL  = require('./../utils/sqlDALFactory')
 const DataPacketPayloadReader = require('./../messageConverters/cattleDataPacketPayloadReader')
-let filePath = path.join(__dirname,'./../protos/CattleProtoDataExt.proto');
+let filePath = path.join(__dirname,'./../protos/CattleProtoData.proto');
 
 
 class CattleDataPacketProcessor extends DataProcessorBase{
