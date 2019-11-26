@@ -1,6 +1,5 @@
 var protobuf = require("protobufjs");
 
-
 class CattleDataPacketPayloadReader{
 
     readMessage(protoFilePath,messageBuffer,logger){
@@ -37,6 +36,7 @@ class CattleDataPacketPayloadReader{
                         if(message.cattleId.length>0 &&  message.cattleId[0]<21 && message.cattleId[0]>0){
                             message.isFdx =  message.cattleId[0]==0x0F; //FDX
                             message.antenna = (message.cattleId[2] & 0x70) >> 4;
+                            message.subType = 1;
                             message.antenna = message.antenna==4?3:message.antenna;
                             
                             for(let i= 3 ;i<message.cattleId.length-1;i++){
@@ -47,11 +47,20 @@ class CattleDataPacketPayloadReader{
                                 cattleIdHex +=  hexdValue;
                             }
                         }
+                        else if(message.cattleId.length>0 &&   message.cattleId[0]==0){
+                            //special message
+                            message.subType = 2;
+                            for(let i= 1 ;i<message.cattleId.length;i++){
+                                let ascii = (message.cattleId[i] & 0xFF)
+                                cattleIdHex +=  String.fromCharCode(ascii);
+                            }
+                            logger.info('CattleDataPacketPayloadReader - subType 2 cattle ' +cattleIdHex ) 
+                        }
                         else{
+                            message.subType = 3;
                             logger.info('CattleDataPacketPayloadReader - no valid cattle id - possible calibration') 
                         }
                         message.timeStampAsDate  =  new Date(Number( message.timeStamp) *1000).toUTCString()
-
                         message.cattleId = cattleIdHex.toUpperCase();
                         resolve(message);
                     }
