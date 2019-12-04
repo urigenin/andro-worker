@@ -29,14 +29,7 @@ class TechDataProcessor extends DataProcessorBase{
             let deviceService = new DeviceService(dal,this.logger);
             let consumerData = await deviceService.getDeviceConsumer(msgProcessed.devUid);
             if(consumerData!=null){
-                let dataForStore = {
-                    deviceUID:consumerData.deviceUID,
-                    dataConsumerId:consumerData.dataConsumerId,
-                    messageTypeId:MessageTypes.MESSAGE_DATA_PACKET,
-                  
-                    recieveDate: new Date()
-                };
-                this.logger.info('####TechPacketProcessor####- accepted incomming message from ' + consumerData.deviceUID + ' with ts ' +msgProcessed.timeStamp  +' weight ' , msgProcessed.weightData )
+                this.logger.info('####TechPacketProcessor####- accepted incomming message from ' + consumerData.deviceUID + ' with ts ' +msgProcessed.timeStamp  +', weight ' , msgProcessed.weightData )
             }
             else{
                 this.logger.warn('####TechPacketProcessor####- No consumer found for TechData message for device ' +msgProcessed.devUid);
