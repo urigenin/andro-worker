@@ -30,7 +30,7 @@ class DataPacketProcessor extends DataProcessorBase{
             let dataConsumerId =null;
             if(consumerData!=null){
                 dataConsumerId = consumerData.dataConsumerId;
-                this.logger.info('DataPacketProcessor- saved new incoming message from ' + consumerData.deviceUID + ' with id ' +newId )
+                this.logger.info('DataPacketProcessor- saved new incoming message from ' + consumerData.deviceUID )
             }
             else{
                 this.logger.warn('No consumer found for message for device ' +msgProcessed.devUid);
