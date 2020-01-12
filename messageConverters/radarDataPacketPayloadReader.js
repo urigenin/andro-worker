@@ -33,12 +33,11 @@ class RadarDataPacketPayloadReader{
                                 if(message.sensorData[i]!=0 && charV!=' ')
                                     sensorDatStr += charV;
                             }
-                            message.raw =  { str: sensorDatStr,
-                                             bytes:message.sensorData} ;
+                            message.raw =  {  bytes:message.sensorData} ;
                             let sepIndex =sensorDatStr.indexOf(',');
                             if(sepIndex>0){
                                 let mainParts = sensorDatStr.split(',');
-                                let snValueParts =mainParts[0].split('SN=');
+                                let snValueParts =mainParts[0].split('SN-');
                                 if(snValueParts.length>1){
                                     message.stationNumber = snValueParts[1];
                                 }
