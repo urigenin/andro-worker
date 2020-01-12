@@ -4,7 +4,8 @@ const MqttConsumer = require('./comm/mqttConsumer')
 const {getMqttBrokerDetails,getIncomingDataPacketTopic,getIncomingTopicPattern} = require('./utils/configManager')
 const loggerLib = require('./utils/logger');
 const DataPacketProcessor = require('./processors/dataPacketProcessor')
-const TechDataProcessor = require('./processors/techDataProcessor')
+const TechDataProcessor = require('./processors/techDataProcessor');
+const RadarDataProcessor = require('./processors/radarDataPacketProcessor')
 const CattleDataPacketProcessor= require('./processors/cattleDataPacketProcessor')
 const logger= loggerLib.initialize(winston);
 
@@ -27,10 +28,12 @@ const start = async function () {
     let dtp = new DataPacketProcessor(logger);
     let cattleDtp = new CattleDataPacketProcessor(logger);    
     let tchp = new TechDataProcessor(logger);
+    let radarDtp = new RadarDataProcessor(logger);
     let processors ={};
     processors[process.env.INCOMING_DATA_PACKET_TOPIC] = {module: dtp};
     processors[process.env.INCOMING_CATTLE_DATA_PACKET_TOPIC] =  {module: cattleDtp};
     processors[process.env.INCOMING_TECH_DATA_PACKET_TOPIC] =  {module: tchp};
+    processors[process.env.INCOMING_RADAR_PACKET_TOPIC] =  {module: radarDtp};
 
     await mqttConsumer.connect(getMqttBrokerDetails(),getMqttBrokerDetails().clientId,(error)=>{
         logger.error('Connection to MQTT, error')
@@ -45,15 +48,26 @@ const start = async function () {
             try{
                 logger.info('New message for topic ' +topic +',  message length ' +newMessage.length);
             
-                let processorRecord = processors[topic];
+                let processorRecord = null;
+                let deviceId='';
+                Object.keys(processors).forEach((topicKey)=>{
+                    if(topic.indexOf(topicKey)==0){
+                        processorRecord = processors[topicKey];
+                        let parts =  topic.split(topicKey);
+                        if(parts.length>1){
+                            deviceId = parts[1];
+                        }
+                    }
+                })
+
                 if (processorRecord==null){
-                    logger.warn('Skipping message ' + topic)
+                    logger.warn('Skipping message ' + topic +' no processor found');
                     return new Promise((r)=>{
                         r();
                     })
                 }
 
-                let prProcess = processorRecord.module.process(newMessage);
+                let prProcess = processorRecord.module.process(newMessage,deviceId);
 
                 return prProcess.then((d)=>{
                     logger.info('Processed for topic ' + topic) 
