@@ -43,26 +43,25 @@ class RadarDataPacketPayloadReader{
                                 }
 
                                 let dataParts = mainParts[1].split('data-');
-                                
-                                message.height=dataParts[1];
-                                message.subType = 1;
+                                if(dataParts.length>1){
+                                    message.height=dataParts[1];
+                                    message.subType = 1;
+                                }
+                                else{
+                                    //system START message
+                                    message.height=null;
+                                    message.techData = sensorDatStr;
+                                    message.subType = 2;
+                                }
                 
                             }
                             else{
-
-                                //system START message
-                                message.height=null;
-                                message.techData = sensorDatStr;
-                                message.subType = 2;
-                            
+                               throw 'Invalid messages format'
                             }
-
                         }
                         else{
                             logger.debug('RadarDataPacketPayloadReader - non sensor data present') 
                         }
-
-
 
                         resolve(message);
                     }
