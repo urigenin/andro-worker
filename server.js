@@ -5,7 +5,9 @@ const {getMqttBrokerDetails,getIncomingDataPacketTopic,getIncomingTopicPattern} 
 const loggerLib = require('./utils/logger');
 const DataPacketProcessor = require('./processors/dataPacketProcessor')
 const TechDataProcessor = require('./processors/techDataProcessor');
-const RadarDataProcessor = require('./processors/radarDataPacketProcessor')
+const RadarDataProcessor = require('./processors/radarDataPacketProcessor');
+const VentDataProcessor = require('./processors/ventDataPacketProcessor')
+
 const CattleDataPacketProcessor= require('./processors/cattleDataPacketProcessor')
 const logger= loggerLib.initialize(winston);
 
@@ -29,11 +31,13 @@ const start = async function () {
     let cattleDtp = new CattleDataPacketProcessor(logger);    
     let tchp = new TechDataProcessor(logger);
     let radarDtp = new RadarDataProcessor(logger);
+    let ventDtp = new VentDataProcessor(logger);
     let processors ={};
     processors[process.env.INCOMING_DATA_PACKET_TOPIC] = {module: dtp};
     processors[process.env.INCOMING_CATTLE_DATA_PACKET_TOPIC] =  {module: cattleDtp};
     processors[process.env.INCOMING_TECH_DATA_PACKET_TOPIC] =  {module: tchp};
     processors[process.env.INCOMING_RADAR_PACKET_TOPIC] =  {module: radarDtp};
+    processors[process.env.INCOMING_VENT_DATA_PACKET_TOPIC] =  {module: ventDtp};
 
     await mqttConsumer.connect(getMqttBrokerDetails(),getMqttBrokerDetails().clientId,(error)=>{
         logger.error('Connection to MQTT, error')

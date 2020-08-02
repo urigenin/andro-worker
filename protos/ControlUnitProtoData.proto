@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package ProtoData;
+
+message DataPacket 
+{
+    bytes timeStamp            = 1; // 8 bytes. linux timestamp, without converting to string.
+    bytes firmwareVersion      = 2; // one byte
+    map<string,bytes> dataMap  = 3;
+}
+
+

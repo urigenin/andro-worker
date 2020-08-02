@@ -19,14 +19,16 @@
                 "INCOMING_RADAR_PACKET_TOPIC":"incoming/radar/",
                 "INCOMING_CATTLE_DATA_PACKET_TOPIC":"incoming/cattle/cattledatapacket",
                 "INCOMING_TECH_DATA_PACKET_TOPIC":"incoming/poultry/techdata",
+                "INCOMING_VENT_DATA_PACKET_TOPIC":"incoming/vent/data",
                 "INCOMING_ERROR_PACKET_TOPIC":"incoming_error",
 
                 "INCOMING_TOPIC_PATTERN":"incoming/#",
                 "MQTT_BROKER_USER_NAME":"andro-worker",
                 "MQTT_BROKER_PASSWORD":"andr0w2019XAA",
                 "MQTT_CLIENT_ID":"andro-worker-iot_11",
-                "LOG_FILE_LOCATION":"c:\\temp\\andro-worker-log",
                 "MQTT_BROKER_ADDRESS":"mqtts://b-3f4b6a80-e5eb-4794-93de-6a211d3954a9-1.mq.us-east-1.amazonaws.com:8883",
+
+                "LOG_FILE_LOCATION":"c:\\temp\\andro-worker-log",
                 "DATABASE_PATH":"mssql://androworker:andro123$@ec2-18-205-82-130.compute-1.amazonaws.com/Andromeda?requestTimeout=30000"
             }
         }
