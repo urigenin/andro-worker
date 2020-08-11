@@ -76,7 +76,7 @@ class CattleDataPacketProcessor extends DataProcessorBase{
         }
         finally{
             if(dal)
-                dal.closeConnection()
+                dal.closeConnection();
         }
     }
 }
