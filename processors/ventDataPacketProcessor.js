@@ -6,7 +6,7 @@ const path = require('path');
 const DataProcessorBase = require('./dataProcessorBase')
 const {MessageTypes}  = require('./../consts');
 const sqlDAL  = require('./../utils/sqlDALFactory')
-const DataPacketPayloadReader = require('./../messageConverters/cattleDataPacketPayloadReader')
+const DataPacketPayloadReader = require('./../messageConverters/controlUnitPacketPayloadReader')
 let filePath = path.join(__dirname,'./../protos/ControlUnitProtoData.proto');
 
 
@@ -14,7 +14,7 @@ class VentDataPacketProcessor extends DataProcessorBase{
     constructor(logger){
         super( logger);
     }
-    async process(rowMessage){
+    async process(rowMessage,deviceId){
         let dal = null;
         let me = this;
         let progresslog="0";
@@ -35,7 +35,7 @@ class VentDataPacketProcessor extends DataProcessorBase{
                 this.logger.warn('No consumer found for message for device ' +msgProcessed.devUid);
             }
             let dataForStore = {
-                deviceUID:msgProcessed.devUid,
+                deviceUID:deviceId,
                 dataConsumerId:consumerIdForTheData,
                 messageTypeId:MessageTypes.MESSAGE_VENT_DATA_PACKET,                  
                 recieveDate: new Date()

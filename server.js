@@ -59,7 +59,8 @@ const start = async function () {
                         processorRecord = processors[topicKey];
                         let parts =  topic.split(topicKey);
                         if(parts.length>1){
-                            deviceId = parts[1];
+                            let subParts =  parts[1].split('/');
+                            deviceId = subParts[subParts.length-1];
                         }
                     }
                 })
@@ -70,6 +71,7 @@ const start = async function () {
                         r();
                     })
                 }
+
 
                 let prProcess = processorRecord.module.process(newMessage,deviceId);
 
