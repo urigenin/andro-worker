@@ -26,7 +26,7 @@ class VentDataPacketProcessor extends DataProcessorBase{
             dal = await sqlDAL.initDAL(configManager.getSQLConfig());
             
             let deviceService = new DeviceService(dal,this.logger);
-            let consumerData = await deviceService.getDeviceConsumer(msgProcessed.devUid);
+            let consumerData = await deviceService.getDeviceConsumer(deviceId || msgProcessed.devUid);
             let consumerIdForTheData = null;
             if(consumerData!=null){
                 consumerIdForTheData= consumerData.dataConsumerId
