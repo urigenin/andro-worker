@@ -32,7 +32,7 @@ class VentDataPacketProcessor extends DataProcessorBase{
                 consumerIdForTheData= consumerData.dataConsumerId
             }
             else{
-                this.logger.warn('No consumer found for message for device ' +msgProcessed.devUid);
+                this.logger.warn('No consumer found for message for device ' + deviceId);
             }
             let dataForStore = {
                 deviceUID:deviceId,
