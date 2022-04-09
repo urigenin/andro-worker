@@ -19,7 +19,7 @@
   "dependencies": {
     "dotenv": "^4.0.0",
     "fs": "0.0.1-security",
-    "moment": "^2.20.1",
+    "moment": "^2.29.2",
     "mqtt": "^2.18.8",
     "mssql": "^4.1.0",
     "node-geocoder": "^3.21.1",
